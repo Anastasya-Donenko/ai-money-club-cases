@@ -1,0 +1,222 @@
+<title>AI Money Club — Розбір кейсу</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#070A10;--card:#111825;--card2:#0E141E;
+  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.15);
+  --tx:#EAF1F8;--tx-dim:#93A2B6;--tx-mute:#5F7085;
+  --tiff:#2FE0C7;--tiff-deep:#12B39C;--gold:#F0C255;--gold-deep:#C9960F;
+  --input-bg:#0B1020;--radius:18px;--maxw:700px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg);overflow-x:hidden}
+body{
+  background:var(--bg);color:var(--tx);min-height:100vh;
+  font-family:'Manrope',system-ui,-apple-system,sans-serif;
+  line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(700px 420px at 85% -5%,rgba(240,194,85,.10),transparent 65%),
+    radial-gradient(600px 380px at -10% 20%,rgba(79,163,255,.07),transparent 65%),
+    radial-gradient(700px 500px at 50% 110%,rgba(47,224,199,.08),transparent 65%);
+}
+h1{font-family:'Unbounded','Arial Black',sans-serif;font-weight:800;letter-spacing:-.03em;text-wrap:balance}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
+
+/* ── Hero ── */
+.hero{padding:28px 0 20px;text-align:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:'Unbounded',sans-serif;font-weight:600;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+  border:1px solid rgba(240,194,85,.35);border-radius:100px;padding:7px 14px;
+  background:rgba(240,194,85,.06);
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);flex:none}
+.hero h1{font-size:clamp(24px,5.5vw,40px);line-height:1.07;margin:12px auto 0}
+.hero h1 .grad{
+  background:linear-gradient(105deg,var(--gold),var(--tiff));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;
+}
+.hero-sub{color:var(--tx-dim);font-size:clamp(13px,2.5vw,15px);max-width:50ch;margin:10px auto 0;line-height:1.6;text-wrap:pretty}
+.hero-sub b{color:var(--tx)}
+
+/* ── Card ── */
+.card{
+  background:linear-gradient(180deg,var(--card),var(--card2));
+  border:1px solid var(--line-strong);border-radius:var(--radius);
+  padding:22px 22px 20px;position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--gold),var(--tiff));border-radius:var(--radius) 0 0 var(--radius);
+}
+.card-head{display:flex;align-items:center;gap:9px;margin-bottom:16px}
+.card-icon{font-size:18px;line-height:1}
+.card-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:13.5px;letter-spacing:-.02em}
+
+/* ── Fields ── */
+.fields{display:flex;flex-direction:column;gap:11px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:4px}
+.flabel{font-family:'Unbounded',sans-serif;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx-mute);font-weight:700}
+.flabel .req{color:var(--gold);margin-left:2px}
+.finput,.ftextarea{
+  background:var(--input-bg);border:1px solid var(--line-strong);
+  border-radius:9px;color:var(--tx);
+  font-family:'Manrope',system-ui,sans-serif;font-size:14px;
+  padding:9px 12px;width:100%;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.finput::placeholder,.ftextarea::placeholder{color:var(--tx-mute)}
+.finput:focus,.ftextarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,194,85,.15)}
+.ftextarea{resize:none;height:100px}
+.char-hint{font-size:9px;color:var(--tx-mute);text-align:right;margin-top:2px;font-family:'Unbounded',sans-serif;letter-spacing:.04em}
+
+/* ── Footer ── */
+.form-bottom{display:flex;justify-content:flex-end;margin-top:14px}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:13px;
+  color:#0A0800;background:linear-gradient(180deg,var(--gold),var(--gold-deep));
+  padding:12px 24px;border-radius:100px;border:0;cursor:pointer;
+  box-shadow:0 10px 28px -8px rgba(240,194,85,.5);transition:transform .14s,opacity .14s;
+}
+.btn:hover:not(:disabled){transform:translateY(-2px)}
+.btn:active:not(:disabled){transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── Status ── */
+.form-status{border-radius:10px;font-size:13px;padding:10px 14px;margin-top:16px;display:none;line-height:1.5}
+.form-status.ok{display:block;background:rgba(240,194,85,.09);color:var(--gold);border:1px solid rgba(240,194,85,.28)}
+.form-status.err{display:block;background:rgba(248,113,113,.08);color:#F87171;border:1px solid rgba(248,113,113,.22)}
+
+/* ── Success screen ── */
+.success-screen{display:none;text-align:center;padding:32px 20px 28px;}
+.success-screen.show{display:block;}
+.success-icon{font-size:52px;line-height:1;margin-bottom:16px;}
+.success-title{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(20px,5vw,28px);letter-spacing:-.03em;margin-bottom:10px;}
+.success-title .grad{background:linear-gradient(105deg,var(--gold),var(--tiff));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;}
+.success-sub{color:var(--tx-dim);font-size:14px;line-height:1.65;max-width:40ch;margin:0 auto 24px;}
+.success-sub b{color:var(--tx);}
+.success-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(240,194,85,.3);border-radius:100px;padding:8px 16px;background:rgba(240,194,85,.06);}
+.success-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);flex:none;animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .wrap{padding:0 12px}
+  .hero{padding:20px 0 14px}
+  .card{padding:18px 16px}
+  .field-row{grid-template-columns:1fr}
+  .form-bottom{justify-content:stretch}
+  .btn{justify-content:center;width:100%}
+  .eyebrow{font-size:8px;letter-spacing:.12em;padding:6px 12px;white-space:nowrap}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+*:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow"><span class="dot"></span>AI Money Club</span>
+    <h1>Розбір твоєї роботи <span class="grad">наживо</span></h1>
+    <p class="hero-sub">Подай свій кейс на розбір перед реальним клієнтом — куратор розбере твою роботу в прямому ефірі. <b>Шанс&nbsp;отримати живий зворотній зв'язок.</b></p>
+  </header>
+
+  <div class="card" id="formCard">
+    <div class="card-head">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Подати кейс на розбір</span>
+    </div>
+    <form id="qForm" novalidate>
+      <div class="fields">
+        <div class="field-row">
+          <div class="field">
+            <label class="flabel" for="fName">Ім'я <span class="req">*</span></label>
+            <input class="finput" type="text" id="fName" placeholder="Ім'я" maxlength="80" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label class="flabel" for="fContact">Телеграм <span class="req">*</span></label>
+            <input class="finput" type="text" id="fContact" placeholder="@username" maxlength="120" required>
+          </div>
+        </div>
+        <div class="field">
+          <label class="flabel" for="fCase">Опис кейсу <span class="req">*</span></label>
+          <textarea class="ftextarea" id="fCase" placeholder="Вкажи нішу/сферу, опиши свою роботу, що хочеш покращити та яке питання до куратора..." maxlength="1500" required></textarea>
+          <div class="char-hint" id="charHint">0 / 1500</div>
+        </div>
+        <div class="field">
+          <label class="flabel" for="fLink">Посилання на роботу <span class="req">*</span></label>
+          <input class="finput" type="url" id="fLink" placeholder="https://..." maxlength="500" required>
+        </div>
+      </div>
+      <div class="form-bottom">
+        <button type="submit" class="btn" id="submitBtn">
+          <svg viewBox="0 0 14 14"><path d="M13 1 1 7l12 6-4-6 4-6Z"/></svg>
+          Надіслати кейс
+        </button>
+      </div>
+      <div class="form-status" id="qStatus" role="alert"></div>
+    </form>
+  </div>
+
+  <div class="card success-screen" id="successScreen">
+    <div class="success-icon">🎯</div>
+    <div class="success-title">Кейс <span class="grad">прийнято!</span></div>
+    <p class="success-sub">Куратор розгляне твою роботу в прямому ефірі. <b>Готуйся до живого зворотнього зв'язку.</b></p>
+    <span class="success-badge"><span class="dot"></span>Очікуй розбір на ефірі</span>
+  </div>
+
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxctO4oCvL1Fsdy_8D-mdomQrnBXqquzaoxqcWjDCvvCZbUYqlHspEtUr-f6YPPuPTa/exec';
+
+function submitToSheet(data) {
+  return fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  });
+}
+
+function showStatus(type, msg) {
+  const el = document.getElementById('qStatus');
+  el.className = 'form-status ' + type;
+  el.textContent = msg;
+}
+
+document.getElementById('fCase').addEventListener('input', function() {
+  document.getElementById('charHint').textContent = this.value.length + ' / 1500';
+});
+
+document.getElementById('qForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const caseText = document.getElementById('fCase').value.trim();
+  const name    = document.getElementById('fName').value.trim();
+  const contact = document.getElementById('fContact').value.trim();
+  const link    = document.getElementById('fLink').value.trim();
+
+  if (!name)     { showStatus('err', 'Вкажи своє ім\'я.'); document.getElementById('fName').focus(); return; }
+  if (!contact)  { showStatus('err', 'Вкажи Телеграм.'); document.getElementById('fContact').focus(); return; }
+  if (!caseText) { showStatus('err', 'Опиши свій кейс.'); document.getElementById('fCase').focus(); return; }
+  if (!link)     { showStatus('err', 'Додай посилання на роботу.'); document.getElementById('fLink').focus(); return; }
+
+  const today = new Date().toLocaleDateString('uk-UA', {day:'2-digit', month:'2-digit', year:'numeric'});
+  document.getElementById('formCard').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+  submitToSheet({ date: today, name, contact, case: caseText, link });
+});
+</script>
